@@ -23,6 +23,9 @@ int main(int argc, char** argv){
     printf("%*ld %*ld\n", (int)strlen(first_name), strlen(first_name),
         (int)strlen(first_name), strlen(last_name));
 
+    printf("%-*ld %-*ld\n", (int)strlen(first_name), strlen(first_name),
+        (int)strlen(first_name), strlen(last_name));
+
     free(first_name);
     free(last_name);
 
@@ -40,5 +43,8 @@ char* get_name(const char* msg) {
 void str_title(char* str) {
     if (str[0] != '\0' && !isupper(str[0])) {
         str[0] = toupper(str[0]);
+    }
+    for (size_t i = 1; str[i] != '\0'; ++i) {
+        str[i] = tolower(str[i]);
     }
 }
