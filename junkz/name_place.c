@@ -34,6 +34,10 @@ int main(int argc, char** argv){
 
 char* get_name(const char* msg) {
     char* name = malloc(sizeof(char)* SIZE);
+    if (name == NULL) {
+        perror("Memory not allocated.");
+        exit(EXIT_FAILURE);
+    }
     printf("%s ", msg);
     scanf("%s", name); /* get name from stdin */
 
@@ -45,6 +49,9 @@ void str_title(char* str) {
         str[0] = toupper(str[0]);
     }
     for (size_t i = 1; str[i] != '\0'; ++i) {
+        if (str[i] == '\n') {  /* remove newline */
+            str[i] = '\0';
+        }
         str[i] = tolower(str[i]);
     }
 }
