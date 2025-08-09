@@ -13,8 +13,10 @@ function usage() {
     echo "Usage: ./${filename} <options> filename"
     echo
     echo "Avaliable Options:"
+    echo "-a    : Create a c file with a corresponding header file."
     echo "-g    : Create a generic c file."
-    echo "-r    : Compile and Run a c file"
+    echo "-h    : helper function"
+    echo "-r    : Compile and Run a c file."
 }
 
 # c start writeup
@@ -29,6 +31,22 @@ int main(int argc, char** argv){
     return 0;
 }
 "
+
+# creating a h file
+#
+function create_header_file() {
+  filename="${1%*.}"
+  header="__${filename^^}__"
+echo "
+
+#ifndef ${header}
+#define ${header}
+#
+
+#endif  /* ${header} */
+
+" > "${filename}.h"
+}
 
 # creating a c file
 function create_file() {
@@ -74,10 +92,16 @@ if [[ "${#}" != 2 ]]; then
     usage
 fi
 
-optstring="d:g:r:h"
+optstring="a:d:g:r:h"
 
 while getopts "${optstring}" opt; do
     case "${opt}" in
+        a)
+            filename="${OPTARG,,}"
+            create_header_file "${filename}" # header file creation
+            create_file "${filename}"
+            ./"${0}" -r "${filename}"
+        ;;
         d)
         filename="${OPTARG,,}"
         for file in $(ls); do
