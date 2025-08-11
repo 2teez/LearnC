@@ -7,6 +7,7 @@
 int main(int argc, char** argv){
 
     printf("[%s]\n", trim(" hello, world!    "));
-
+    printf("[%s]\n", lstrip("       hello, world!    "));
+    printf("[%s]\n", rstrip(" hello, world!    "));
     return 0;
 }
