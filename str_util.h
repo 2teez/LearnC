@@ -5,5 +5,8 @@
 
 void str_title(char*);
 char* trim(const char*);
+char* lstrip(const char*);
+char* rstrip(const char*);
+char* strip(const char*);
 
 #endif  /* __STR_UTIL__ */
