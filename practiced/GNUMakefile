@@ -1,0 +1,22 @@
+VPATH = ../src ../includes
+
+CC     = gcc
+CFLAGS = -Wall -std=c17 -I../includes -I../src
+
+TARGET = string-used-case
+OBJS   = string-used-case.o str_util.o
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) -o $@
+
+string-used-case.o: string-used-case.c str_util.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+str_util.o: str_util.c str_util.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(TARGET) $(OBJS)
