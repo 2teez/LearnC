@@ -16,7 +16,7 @@ int main(int argc, char** argv){
 
     //printf("{%s}\n", get_first_word());
 
-    char* ans = my_strchr("C programmings", ' ');
+    const char* ans = my_strchr("C programmings", ' ');
     if (ans)
         printf("%p, %c", ans, *ans);
 
