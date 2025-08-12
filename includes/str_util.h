@@ -3,6 +3,8 @@
 #
 #define SIZE 256
 
+typedef char* string;
+
 void str_title(char*);
 char* trim(const char*);
 char* lstrip(const char*);
