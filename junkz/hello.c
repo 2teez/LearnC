@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv){
 
-    printf("%s\n","Hello, World!");
+    printf("Hello, World!");
 
     return 0;
 }
