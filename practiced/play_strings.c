@@ -10,10 +10,15 @@
 #define SPACE ' '
 
 char* get_first_word(void);
+const char* my_strchr(const char* restrict, char);
 
 int main(int argc, char** argv){
 
-    printf("{%s}\n", get_first_word());
+    //printf("{%s}\n", get_first_word());
+
+    char* ans = my_strchr("C programmings", ' ');
+    if (ans)
+        printf("%p, %c", ans, *ans);
 
     return 0;
 }
@@ -40,4 +45,11 @@ char* get_first_word(void){
     strncpy(str, nstr, count);
     str[count] = '\0';
     return str;
+}
+
+const char* my_strchr(const char* restrict str, char ch) {
+  while(*str != '\0' && *str != ch)
+      str++;
+  if (*str == ch) return str;
+  return NULL;
 }
