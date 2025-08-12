@@ -1,9 +1,14 @@
-character_print: character_print.o
-	gcc character_print.o -o character_print
+VPATH = ../src ../includes
 
-character_print.o: character_print.c
-	gcc -Wall -std=c17 -c character_print.c -o character_print.o
+string-used-case: string-used-case.o str_util.o
+	gcc string-used-case.o str_util.o -o string-used-case
+
+string-used-case.o: string-used-case.c str_util.h
+	gcc -Wall -std=c17 -c string-used-case.c -o string-used-case.o
+
+str_util.o: str_util.c str_util.h
+	gcc -Wall -std=c17 -I../src -I../includes -c ../src/str_util.c -o str_util.o
 
 .PHONY: clean
 clean:
-	rm -f character_print character_print.o
+	rm -f string-used-case string-used-case.o str_util.o
