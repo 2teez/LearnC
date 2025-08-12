@@ -1,13 +1,13 @@
 VPATH = ../includes ../src
 
 play_strings: play_strings.o str_util.o
-	gcc play_strings.o str_util.o -o play_strings
+	clang -fsanitize=address play_strings.o str_util.o -o play_strings
 
 play_strings.o: play_strings.c str_util.h
-	gcc -Wall -std=c17 -c play_strings.c -o play_strings.o
+	clang -Wall -std=c17 -fsanitize=address -g -c play_strings.c -o play_strings.o
 
 str_util.o: str_util.h str_util.c
-	gcc -Wall -std=c17 -c -I../includes -I../src ../src/str_util.c -o str_util.o
+	clang -Wall -std=c17 -fsanitize=address -c -I../includes -I../src ../src/str_util.c -o str_util.o
 
 .PHONY: clean
 clean:
