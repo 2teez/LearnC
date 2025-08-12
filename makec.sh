@@ -32,6 +32,23 @@ int main(int argc, char** argv){
 }
 "
 
+# make a makefile
+function create_makefile() {
+    filename="${1}"
+printf "${filename}: ${filename}.o" > Makefile
+echo "" >> Makefile
+printf "\tgcc ${filename}.o -o ${filename}\n" >> Makefile
+echo "" >> Makefile
+printf "${filename}.o: ${filename}.c" >> Makefile
+echo "" >> Makefile
+printf "\tgcc -Wall -std=c17 -c ${filename}.c -o ${filename}.o\n" >> Makefile
+echo "" >> Makefile
+printf ".PHONY: clean\n" >> Makefile
+printf "clean:\n" >> Makefile
+printf "\trm -f ${filename} ${filename}.o" >> Makefile
+
+}
+
 # creating a h file
 #
 function create_header_file() {
@@ -134,8 +151,14 @@ while getopts "${optstring}" opt; do
             file_o_run="${filename%.*}";
             gcc -Wall -std=c17  -o "${file_o_run}" "${filename}"
             chmod +x "${file_o_run}"
+            # make a makefile
+            create_makefile "${file_o_run}"
+            # run make command
+            make
             ./"${file_o_run}"
-            rm "${file_o_run}"
+            echo
+            make clean # run make clean
+            #rm "${file_o_run}"
         ;;
         *.*);;
     esac
