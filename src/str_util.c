@@ -78,12 +78,14 @@ char* strip(const char* str) {
 
 char* input(const char* msg) {
     printf("%s", msg);
+    size_t capacity = SIZE;
     char *result = make_string();
     int ch;
     int counter = 0;
     while((ch = getchar()) != '\n' && ch != EOF) {
-        if (counter > SIZE -1) {
-            char *temp = realloc(result, SIZE * 2);
+        if (counter >= capacity -1) {
+            capacity *= 2;
+            char *temp = realloc(result, capacity);
             if (!temp) {
                 perror("Can't re-allocate a bigger memory for input.");
                 exit(EXIT_FAILURE);
