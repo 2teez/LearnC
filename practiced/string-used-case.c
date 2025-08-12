@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv){
 
-    char* name = input("Enter your name: ");
+    string name = input("Enter your name: ");
 
     printf("My name is: %s\n", name);
     return 0;
