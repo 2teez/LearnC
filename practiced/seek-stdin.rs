@@ -11,7 +11,8 @@ fn main() {
 }
 
 fn get_input(msg: &str) -> String {
-    println!("{}", msg);
+    print!("{}", msg);
+    io::stdout().flush();
     let mut line = String::new();
     io::stdin().read_line(&mut line).expect("Wrong input");
     line.trim().to_string()
