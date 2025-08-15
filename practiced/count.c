@@ -19,7 +19,6 @@ int main(int argc, char** argv){
        exit(EXIT_FAILURE);
    }
    strncpy(filename, argv[1], SIZE+1);
-   //while(*filename++ == '\n')*filename = '\0';
 
     FILE *fh = fopen(filename, "r");
     if (fh == NULL) {
@@ -33,7 +32,7 @@ int main(int argc, char** argv){
         putchar(ch);
         count++;
     }
-
+    fclose(fh);
     printf("%ld\n", count);
 
     return 0;
