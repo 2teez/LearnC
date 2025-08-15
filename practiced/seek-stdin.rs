@@ -12,7 +12,7 @@ fn main() {
 
 fn get_input(msg: &str) -> String {
     print!("{}", msg);
-    io::stdout().flush();
+    io::stdout().flush().unwrap();
     let mut line = String::new();
     io::stdin().read_line(&mut line).expect("Wrong input");
     line.trim().to_string()
