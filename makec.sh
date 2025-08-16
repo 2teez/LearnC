@@ -27,7 +27,6 @@ FILE="
 int main(int argc, char** argv){
 
     printf(\"Hello, World!\");
-
     return 0;
 }
 "
@@ -43,7 +42,10 @@ printf "${filename}.o: ${filename}.c" >> Makefile
 echo "" >> Makefile
 printf "\tgcc -Wall -std=c17 -c ${filename}.c -o ${filename}.o\n" >> Makefile
 echo "" >> Makefile
-printf ".PHONY: clean\n" >> Makefile
+printf "run:\n" >> Makefile
+printf "\t ./${filename}" >> Makefile
+echo "" >> Makefile
+printf "\n.PHONY: clean\n" >> Makefile
 printf "clean:\n" >> Makefile
 printf "\trm -f ${filename} *.o" >> Makefile
 
