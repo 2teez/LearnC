@@ -1,9 +1,12 @@
-hello: hello.o
-	gcc hello.o -o hello
+linkedlist: linkedlist.o
+	gcc linkedlist.o -o linkedlist
 
-hello.o: hello.c
-	gcc -Wall -std=c17 -c hello.c -o hello.o
+linkedlist.o: linkedlist.c
+	gcc -Wall -std=c17 -c linkedlist.c -o linkedlist.o
+
+run:
+	 ./linkedlist
 
 .PHONY: clean
 clean:
-	rm -f hello hello.o
+	rm -f linkedlist *.o
