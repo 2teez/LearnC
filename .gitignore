@@ -5,3 +5,7 @@ Makefile
 */Makefile
 */*/Makefile
 */*/*/Makefile
+CMakeLists.txt
+*/CMakeLists.txt
+*/*/CMakeLists.txt
+*/*/*/CMakeLists.txt
