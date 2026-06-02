@@ -22,12 +22,12 @@ function usage() {
 
 # c start writeup
 FILE="
-// A complete C Program
+/* A complete C Program */
 #include <stdio.h>
 
 int main(int argc, char** argv){
 
-    printf(\"Hello, World!\");
+    printf(\"Hello, World!\n\");
     return 0;
 }
 "
@@ -45,11 +45,11 @@ function create_makefile() {
         printf '%s\n'"\tgcc -Wall -std=c17 -c ${filename}.c -o ${filename}.o"
         echo ""
         printf "run:\n"
-        printf '\t%s\n'"\t ./${filename}"
+        printf '%s\n'"\t./${filename}"
         echo ""
         printf "\n.PHONY: clean\n"
         printf "clean:\n"
-        printf '\t%s\n'"\trm -f ${filename} *.o"
+        printf '%s\n'"\trm -f ${filename} *.o"
     } >> Makefile
 }
 
@@ -74,15 +74,16 @@ function create_file() {
     filename="${1}"
     filext="${filename#*.}"
 
+# muted rust file creation
     # create a rust file
-    rust_file="${filename}.rs"
-    echo "
-#![allow(dead_code, unused)]
+    #rust_file="${filename}.rs"
+    #echo "
+    #![allow(dead_code, unused)]
 
-fn main() {
-  println!("Hello, World!");
-}" > "${rust_file}"
-    # make a file with cpp extension
+#fn main() {
+#  println!("Hello, World!");
+#}" > "${rust_file}"
+    # make a file with c extension
     [[ "${filext}" == "${filename}" ]] && filename="${filename}.c"
 
     if [[ -e "${filename}" ]]; then
@@ -91,7 +92,7 @@ fn main() {
         while read -r ans; do
             case "${ans,,}" in
                 y)
-                echo "// ${filename}" > "${filename}"
+                echo "/* ${filename} */" > "${filename}"
                 echo "${FILE}" >> "${filename}"
                 echo "${filename}" "is overwritten."
                 break
@@ -104,7 +105,7 @@ fn main() {
             esac
         done
     else
-        echo "// ${filename}" > "${filename}"
+        echo "/* ${filename} */" > "${filename}"
         echo "${FILE}" >> "${filename}"
     fi
 }
@@ -128,7 +129,7 @@ while getopts "${optstring}" opt; do
         for file in *.*; do
             if [[ "${filename}" = "${file}" ]]; then
                 echo "Do you want to delete ${file}? [y|n]: "
-                while read -rans; do
+                while read -r ans; do
                     case "${ans,,}" in
                         y) rm "${file}"
                            exit 0;;
