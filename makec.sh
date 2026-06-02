@@ -183,16 +183,29 @@ while getopts "${optstring}" opt; do
         r)
             filename="${OPTARG}"
             file_o_run="${filename%.*}";
-            gcc -Wall -std=c17  -o "${file_o_run}" "${filename}"
-            chmod +x "${file_o_run}"
-            # make a makefile
-            create_makefile "${file_o_run}"
-            # run make command
-            make
-            ./"${file_o_run}"
-            echo
-            make clean # run make clean
-            #rm "${file_o_run}"
+            while read -r -e -p "Compile and Run either with 'make' or 'cmake' [m/c]: " line; do
+                case "${line,,}" in
+                    m)
+                        gcc -Wall -std=c17  -o "${file_o_run}" "${filename}"
+                        chmod +x "${file_o_run}"
+                        # make a makefile
+                        create_makefile "${file_o_run}"
+                        # run make command
+                        make
+                        ./"${file_o_run}"
+                        echo
+                        make clean # run make clean
+                        #rm "${file_o_run}"
+                       exit 0;;
+                    c) cmake -S . -B build && cmake --build build
+                       ./build/"${file_o_run}"
+                       rm -rf build
+                       exit 0;;
+                    *) printf "Can only use 'm' for make, and 'c' for cmake.\n"
+                       continue
+                       ;;
+                esac
+            done
         ;;
         *.*);;
     esac
