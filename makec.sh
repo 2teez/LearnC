@@ -46,7 +46,7 @@ function create_cmake() {
         echo "# file(GLOB_RECURSE SOURCES src/*.c)"
         echo "# then change the following line to use glob to find source files"
         echo "# target_sources(\${PROJECT_NAME} PRIVATE \${SOURCES})"
-        echo "target_sources(\${PROJECT_NAME} PRIVATE src/${filename}.c)"
+        echo "target_sources(\${PROJECT_NAME} PRIVATE src/${filename%.*}.c)"
         echo "target_compile_features(\${PROJECT_NAME} PRIVATE c_std_23)"
         #echo "target_link_libraries(\${PROJECT_NAME} )"
     } > "${cfilename}"
@@ -147,7 +147,6 @@ while getopts "${optstring}" opt; do
         c)
             filename="${OPTARG,,}"
             create_cmake "${filename}"
-            create_file "${filename%.*}.c"
             mkdir -p src
             mv "${filename%.*}.c" src/
             cmake -S . -B build && cmake --build build
@@ -176,7 +175,7 @@ while getopts "${optstring}" opt; do
         g)
           filename="${OPTARG,,}"
           create_file "${filename}"
-          ./"${0}" -r "${filename}"
+          ./"${0}" -c "${filename}"
         ;;
         h) usage
         ;;
@@ -197,10 +196,14 @@ while getopts "${optstring}" opt; do
                         make clean # run make clean
                         #rm "${file_o_run}"
                        exit 0;;
-                    c) cmake -S . -B build && cmake --build build
+                    c)
+                        [[ -f CMakeLists.txt ]] && { rm -f CMakeLists.txt; create_cmake "${filename}"; }
+                        ! [[ -f CMakeLists.txt ]] && create_cmake "${filename}"
+                        cmake -S . -B build && cmake --build build
                        ./build/"${file_o_run}"
                        rm -rf build
-                       exit 0;;
+                       exit 0
+                       ;;
                     *) printf "Can only use 'm' for make, and 'c' for cmake.\n"
                        continue
                        ;;
