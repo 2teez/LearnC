@@ -35,21 +35,22 @@ int main(int argc, char** argv){
 # make a makefile
 function create_makefile() {
     filename="${1}"
-printf "${filename}: ${filename}.o" > Makefile
-echo "" >> Makefile
-printf "\tgcc ${filename}.o -o ${filename}\n" >> Makefile
-echo "" >> Makefile
-printf "${filename}.o: ${filename}.c" >> Makefile
-echo "" >> Makefile
-printf "\tgcc -Wall -std=c17 -c ${filename}.c -o ${filename}.o\n" >> Makefile
-echo "" >> Makefile
-printf "run:\n" >> Makefile
-printf "\t ./${filename}" >> Makefile
-echo "" >> Makefile
-printf "\n.PHONY: clean\n" >> Makefile
-printf "clean:\n" >> Makefile
-printf "\trm -f ${filename} *.o" >> Makefile
-
+    {
+        echo "${filename}: ${filename}.o"
+        echo ""
+        printf '%s\n'"\tgcc ${filename}.o -o ${filename}"
+        echo ""
+        echo "${filename}.o: ${filename}.c"
+        echo ""
+        printf '%s\n'"\tgcc -Wall -std=c17 -c ${filename}.c -o ${filename}.o"
+        echo ""
+        printf "run:\n"
+        printf '\t%s\n'"\t ./${filename}"
+        echo ""
+        printf "\n.PHONY: clean\n"
+        printf "clean:\n"
+        printf '\t%s\n'"\trm -f ${filename} *.o"
+    } >> Makefile
 }
 
 # creating a h file
@@ -87,11 +88,11 @@ fn main() {
     if [[ -e "${filename}" ]]; then
         echo "${filename}" "exist."
         printf "Do you want to overwrite it? [y|n]: "
-        while read ans; do
+        while read -r ans; do
             case "${ans,,}" in
                 y)
                 echo "// ${filename}" > "${filename}"
-                printf "${FILE}" >> "${filename}"
+                echo "${FILE}" >> "${filename}"
                 echo "${filename}" "is overwritten."
                 break
                 ;;
@@ -124,10 +125,10 @@ while getopts "${optstring}" opt; do
         ;;
         d)
         filename="${OPTARG,,}"
-        for file in $(ls); do
+        for file in *.*; do
             if [[ "${filename}" = "${file}" ]]; then
-                printf "Do you want to delete ${file}? [y|n]: "
-                while read ans; do
+                echo "Do you want to delete ${file}? [y|n]: "
+                while read -rans; do
                     case "${ans,,}" in
                         y) rm "${file}"
                            exit 0;;
@@ -147,7 +148,6 @@ while getopts "${optstring}" opt; do
           ./"${0}" -r "${filename}"
         ;;
         h) usage
-           exit 1
         ;;
         r)
             filename="${OPTARG}"
