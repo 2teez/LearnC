@@ -10,13 +10,14 @@
 function usage() {
     filename="${0}"
     echo
-    echo "Usage: ./${filename} <options> filename"
+    echo "Usage: ${filename} <options> filename"
     echo
     echo "Avaliable Options:"
     echo "-a    : Create a c file with a corresponding header file."
     echo "-g    : Create a generic c file."
     echo "-h    : helper function"
     echo "-r    : Compile and Run a c file."
+    exit 1
 }
 
 # c start writeup
