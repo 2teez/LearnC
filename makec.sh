@@ -14,6 +14,7 @@ function usage() {
     echo
     echo "Avaliable Options:"
     echo "-a    : Create a c file with a corresponding header file."
+    echo "-c    : Create a CMakeLists.txt file."
     echo "-g    : Create a generic c file."
     echo "-h    : helper function"
     echo "-r    : Compile and Run a c file."
@@ -23,14 +24,33 @@ function usage() {
 # c start writeup
 FILE="
 /* A complete C Program */
+#include <stdlib.h>
 #include <stdio.h>
 
 int main(int argc, char** argv){
 
     printf(\"Hello, World!\n\");
-    return 0;
+    return EXIT_SUCCESS;
 }
 "
+
+
+function create_cmake() {
+    filename="${1}"
+    cfilename="CMakeLists.txt"
+    {
+        echo "cmake_minimum_required(VERSION 3.10)"
+        echo "project(${filename%.*} LANGUAGES C)"
+        echo "add_executable(\${PROJECT_NAME})"
+        echo "# uncomment the following line to use glob to find source files"
+        echo "# file(GLOB_RECURSE SOURCES src/*.c)"
+        echo "# then change the following line to use glob to find source files"
+        echo "# target_sources(\${PROJECT_NAME} PRIVATE \${SOURCES})"
+        echo "target_sources(\${PROJECT_NAME} PRIVATE src/${filename}.c)"
+        echo "target_compile_features(\${PROJECT_NAME} PRIVATE c_std_23)"
+        #echo "target_link_libraries(\${PROJECT_NAME} )"
+    } > "${cfilename}"
+}
 
 # make a makefile
 function create_makefile() {
@@ -114,7 +134,7 @@ if [[ "${#}" != 2 ]]; then
     usage
 fi
 
-optstring="a:d:g:r:h"
+optstring="a:c:d:g:r:h"
 
 while getopts "${optstring}" opt; do
     case "${opt}" in
@@ -123,6 +143,16 @@ while getopts "${optstring}" opt; do
             create_header_file "${filename}" # header file creation
             create_file "${filename}"
             ./"${0}" -r "${filename}"
+        ;;
+        c)
+            filename="${OPTARG,,}"
+            create_cmake "${filename}"
+            create_file "${filename%.*}.c"
+            mkdir -p src
+            mv "${filename%.*}.c" src/
+            cmake -S . -B build && cmake --build build
+            ./build/"${filename%.*}"
+            rm -rf build
         ;;
         d)
         filename="${OPTARG,,}"
