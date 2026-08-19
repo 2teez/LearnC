@@ -9,3 +9,7 @@ CMakeLists.txt
 */CMakeLists.txt
 */*/CMakeLists.txt
 */*/*/CMakeLists.txt
+*.o
+*/*.o
+*/*/*.o
+*/*/*/*.o
