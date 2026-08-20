@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum langs { c, cpp, python, java, js, langs_num };
+typedef enum langs { c, cpp, python, java, js, langs_num } langs;
 
 int main(int argc, char **argv) {
 
@@ -16,6 +16,9 @@ int main(int argc, char **argv) {
   for (size_t i = 0; i < langs_num; i++) {
     printf("%s\n", lang_names[i]);
   }
+
+  langs preferred = python;
+  printf("Preferred language: %s\n", lang_names[preferred]);
 
   return EXIT_SUCCESS;
 }
